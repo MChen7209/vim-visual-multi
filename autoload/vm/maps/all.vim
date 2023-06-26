@@ -63,7 +63,7 @@ fun! vm#maps#all#permanent() abort
     let maps["Visual All"][0]            = visual.'A'
     let maps["Visual Add"][0]            = visual.'a'
     let maps["Visual Find"][0]           = visual.'f'
-    let maps["Visual Cursors"][0]        = visual.'c'
+    let maps["Visual Cursors"][0]        = visual.'w'
   endif
 
   if g:VM_mouse_mappings
@@ -110,9 +110,9 @@ fun! vm#maps#all#buffer() abort
   call extend(maps, {
         \"Tools Menu":              [leader.'`',      'n'],
         \"Show Registers":          [leader.'"',      'n'],
-        \"Case Setting":            [leader.'c',      'n'],
-        \"Toggle Whole Word":       [leader.'w',      'n'],
-        \"Case Conversion Menu":    [leader.'C',      'n'],
+        \"Case Setting":            [leader.'w',      'n'],
+        \"Toggle Whole Word":       [leader.'u',      'n'],
+        \"Case Conversion Menu":    [leader.'w',      'n'],
         \"Search Menu":             [leader.'S',      'n'],
         \"Rewrite Last Search":     [leader.'r',      'n'],
         \"Show Infoline":           [leader.'l',      'n'],
@@ -221,7 +221,7 @@ fun! vm#maps#all#buffer() abort
   "edit
   call extend(maps, {
         \"D":                       ['D',           'n'],
-        \"Y":                       ['Y',           'n'],
+        \"Y":                       ['C',           'n'],
         \"x":                       ['x',           'n'],
         \"X":                       ['X',           'n'],
         \"J":                       ['J',           'n'],
@@ -241,18 +241,18 @@ fun! vm#maps#all#buffer() abort
         \"I":                       ['I',           'n'],
         \"o":                       ['o',           'n'],
         \"O":                       ['O',           'n'],
-        \"c":                       ['c',           'n'],
+        \"c":                       ['w',           'n'],
         \"gc":                      ['gc',          'n'],
         \"gu":                      ['gu',          'n'],
         \"gU":                      ['gU',          'n'],
-        \"C":                       ['C',           'n'],
+        \"C":                       ['w',           'n'],
         \"Delete":                  ['d',           'n'],
         \"Replace Characters":      ['r',           'n'],
         \"Replace":                 ['R',           'n'],
-        \"Transform Regions":       [leader.'e',    'n'],
+        \"Transform Regions":       [leader.'y',    'n'],
         \"p Paste":                 ['p',           'n'],
         \"P Paste":                 ['P',           'n'],
-        \"Yank":                    ['y',           'n'],
+        \"Yank":                    ['c',           'n'],
         \})
 
   return maps

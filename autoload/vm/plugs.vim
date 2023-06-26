@@ -32,7 +32,7 @@ fun! vm#plugs#permanent() abort
   nmap     <silent>       <Plug>(VM-Mouse-Word)              <Plug>(VM-Left-Mouse)<Plug>(VM-Find-Under)
   nnoremap <silent>       <Plug>(VM-Mouse-Column)            :call vm#commands#mouse_column()<cr>
 
-  let g:Vm.select_motions = ['h', 'j', 'k', 'l', 'w', 'W', 'b', 'B', 'e', 'E', 'ge', 'gE', 'BBW']
+  let g:Vm.select_motions = ['h', 'j', 'k', 'l', 'u', 'U', 'l', 'L', 'y', 'Y', 'ge', 'gE', 'BBW']
   for m in g:Vm.select_motions
     exe "nnoremap <silent> <Plug>(VM-Select-".m.") :\<C-u>call vm#commands#motion('".m."', v:count1, 1, 0)\<cr>"
   endfor
@@ -41,7 +41,7 @@ endfun
 
 fun! vm#plugs#buffer() abort
   " Plugs and mappings for <buffer> keys.
-  let g:Vm.motions        = ['h', 'j', 'k', 'l', 'w', 'W', 'b', 'B', 'e', 'E', ',', ';', '$', '0', '^', '%', 'ge', 'gE', '\|']
+  let g:Vm.motions        = ['h', 'j', 'k', 'l', 'u', 'U', 'l', 'L', 'y', 'Y', ',', ';', '$', '0', '^', '%', 'ge', 'gE', '\|']
   let g:Vm.find_motions   = ['f', 'F', 't', 'T']
   let g:Vm.tobj_motions   = { '{': '{', '}': '}', '(': '(', ')': ')', 'g{': '[{', 'g}': ']}', 'g)': '])', 'g(': '[(' }
 
@@ -151,7 +151,7 @@ fun! vm#plugs#buffer() abort
 
   "Edit commands
   nnoremap <silent>        <Plug>(VM-D)                       :<C-u>call vm#cursors#operation('d', 0, v:register, 'd$')<cr>
-  nnoremap <silent>        <Plug>(VM-Y)                       :<C-u>call vm#cursors#operation('y', 0, v:register, 'y$')<cr>
+  nnoremap <silent>        <Plug>(VM-Y)                       :<C-u>call vm#cursors#operation('c', 0, v:register, 'y$')<cr>
   nnoremap <silent>        <Plug>(VM-x)                       :<C-u>call b:VM_Selection.Edit.xdelete('x', v:count1)<cr>
   nnoremap <silent>        <Plug>(VM-X)                       :<C-u>call b:VM_Selection.Edit.xdelete('X', v:count1)<cr>
   nnoremap <silent>        <Plug>(VM-J)                       :<C-u>call b:VM_Selection.Edit.run_normal('J', {'count': v:count1, 'recursive': 0})<cr>
@@ -175,7 +175,7 @@ fun! vm#plugs#buffer() abort
   nnoremap <silent>        <Plug>(VM-gc)                      :<C-u>call b:VM_Selection.Edit.change(g:Vm.extend_mode, v:count1, v:register, 1)<cr>
   nnoremap <silent>        <Plug>(VM-gu)                      :<C-u>call <sid>Operator('gu', v:count1, v:register)<cr>
   nnoremap <silent>        <Plug>(VM-gU)                      :<C-u>call <sid>Operator('gU', v:count1, v:register)<cr>
-  nnoremap <silent>        <Plug>(VM-C)                       :<C-u>call vm#cursors#operation('c', 0, v:register, 'c$')<cr>
+  nnoremap <silent>        <Plug>(VM-C)                       :<C-u>call vm#cursors#operation('w', 0, v:register, 'c$')<cr>
   nnoremap <silent>        <Plug>(VM-Delete)                  :<C-u>call b:VM_Selection.Edit.delete(g:Vm.extend_mode, v:register, v:count1, 1)<cr>
   nnoremap <silent>        <Plug>(VM-Delete-Exit)             :<C-u>call b:VM_Selection.Edit.delete(g:Vm.extend_mode, v:register, v:count1, 1)<cr>:call vm#reset()<cr>
   nnoremap <silent>        <Plug>(VM-Replace-Characters)      :<C-u>call b:VM_Selection.Edit.replace_chars()<cr>
@@ -210,13 +210,13 @@ fun! vm#plugs#buffer() abort
   nnoremap <silent>        <Plug>(VM-Run-Visual)              :call b:VM_Selection.Edit.run_visual(-1, 1)<cr>
   nnoremap <silent>        <Plug>(VM-Run-Last-Visual)         :call b:VM_Selection.Edit.run_visual(g:Vm.last_visual[0], g:Vm.last_visual[1])<cr>
 
-  inoremap <silent><expr> <Plug>(VM-I-Arrow-w)          <sid>Insert('w')
-  inoremap <silent><expr> <Plug>(VM-I-Arrow-b)          <sid>Insert('b')
-  inoremap <silent><expr> <Plug>(VM-I-Arrow-W)          <sid>Insert('W')
-  inoremap <silent><expr> <Plug>(VM-I-Arrow-B)          <sid>Insert('B')
-  inoremap <silent><expr> <Plug>(VM-I-Arrow-e)          <sid>Insert('e')
+  inoremap <silent><expr> <Plug>(VM-I-Arrow-w)          <sid>Insert('u')
+  inoremap <silent><expr> <Plug>(VM-I-Arrow-b)          <sid>Insert('l')
+  inoremap <silent><expr> <Plug>(VM-I-Arrow-W)          <sid>Insert('U')
+  inoremap <silent><expr> <Plug>(VM-I-Arrow-B)          <sid>Insert('L')
+  inoremap <silent><expr> <Plug>(VM-I-Arrow-e)          <sid>Insert('y')
   inoremap <silent><expr> <Plug>(VM-I-Arrow-ge)         <sid>Insert('ge')
-  inoremap <silent><expr> <Plug>(VM-I-Arrow-E)          <sid>Insert('E')
+  inoremap <silent><expr> <Plug>(VM-I-Arrow-E)          <sid>Insert('Y')
   inoremap <silent><expr> <Plug>(VM-I-Arrow-gE)         <sid>Insert('gE')
   inoremap <silent><expr> <Plug>(VM-I-Left-Arrow)       <sid>Insert('h')
   inoremap <silent><expr> <Plug>(VM-I-Right-Arrow)      <sid>Insert('l')
@@ -307,7 +307,7 @@ fun! s:Insert(key) abort
         \ 'cr': "\<esc>:call vm#icmds#return()\<cr>".i,
         \ 'x': "\<esc>:call vm#icmds#x('".a:key."')\<cr>".i,
         \ 'ge': "\<esc>:call vm#commands#motion('h".a:key."l', 1, 0, 0)\<cr>".i,
-        \ 'e': "\<esc>:call vm#commands#motion('".a:key."l', 1, 0, 0)\<cr>".i,
+        \ 'y': "\<esc>:call vm#commands#motion('".a:key."l', 1, 0, 0)\<cr>".i,
         \ 'a': "\<esc>:call b:VM_Selection.Insert.key('A')\<cr>",
         \ 'i': "\<esc>:call b:VM_Selection.Insert.key('I')\<cr>",
         \ 'c-v': "\<esc>:call vm#icmds#paste()\<cr>".a,
@@ -340,12 +340,12 @@ fun! s:Yank() abort
   try
     if empty(b:VM_Selection.Global.region_at_pos())
       let b:VM_Selection.Vars.yanked = 1
-      return 'y'
+      return 'c'
     endif
     return ":\<C-u>call b:VM_Selection.Edit.yank(v:register, 1, 1)\<cr>"
   catch
     VMClear
-    return 'y'
+    return 'c'
   endtry
 endfun
 

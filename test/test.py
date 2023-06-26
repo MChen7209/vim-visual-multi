@@ -204,7 +204,7 @@ def main():
 
     # execution
     failing_tests = []
-    f = open('test.log', 'w')
+    f = open('test.log', 'u')
     tests = sorted([PurePath(str(p)).name for p in Path('tests').glob('*')])
     if args.list:
         print_tests_list(tests, f)

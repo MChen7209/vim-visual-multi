@@ -43,14 +43,14 @@ fun! vm#cursors#operation(op, n, register, ...) abort
     elseif s:double(c)              | echon c | let M .= c
       let c = nr2char(getchar())    | echon c | let M .= c | break
 
-    elseif oper ==# 'c' && c==?'r'  | echon c | let M .= c
+    elseif oper ==# 'w' && c==?'r'  | echon c | let M .= c
       let c = nr2char(getchar())    | echon c | let M .= c | break
 
-    elseif oper ==# 'c' && c==?'s'  | echon c | let M .= c
+    elseif oper ==# 'w' && c==?'s'  | echon c | let M .= c
       let c = nr2char(getchar())    | echon c | let M .= c
       let c = nr2char(getchar())    | echon c | let M .= c | break
 
-    elseif oper ==# 'y' && c==?'s'  | echon c | let M .= c
+    elseif oper ==# 'c' && c==?'s'  | echon c | let M .= c
       let c = nr2char(getchar())    | echon c | let M .= c
       if s:double(c)
         let c = nr2char(getchar())  | echon c | let M .= c
@@ -96,11 +96,11 @@ endfun
 fun! s:process(op, M, reg, n) abort
   " Process the whole command
   let s:v.dot = a:M
-  let s:v.deleting = a:op == 'd' || a:op == 'c'
+  let s:v.deleting = a:op == 'd' || a:op == 'w'
 
   if a:op ==# 'd'     | call s:delete_at_cursors(a:M, a:reg, a:n)
-  elseif a:op ==# 'c' | call s:change_at_cursors(a:M, a:reg, a:n)
-  elseif a:op ==# 'y' | call s:yank_at_cursors(a:M, a:reg, a:n)
+  elseif a:op ==# 'w' | call s:change_at_cursors(a:M, a:reg, a:n)
+  elseif a:op ==# 'c' | call s:yank_at_cursors(a:M, a:reg, a:n)
   else
     " if it's a custom operator, pass the mapping as-is, and hope for the best
     call s:V.Edit.run_normal(a:M, {'count': a:n, 'recursive': 1})
@@ -181,12 +181,12 @@ fun! s:yank_at_cursors(M, reg, n) abort
 
   call s:G.change_mode()
 
-  let [Obj, N] = s:parse_cmd(Cmd, '"'.a:reg, a:n, 'y')
+  let [Obj, N] = s:parse_cmd(Cmd, '"'.a:reg, a:n, 'c')
 
   "for Y, y$, yy, ensure there is only one region per line
   if (Obj == '$' || Obj == '_') | call s:G.one_region_per_line() | endif
 
-  call s:V.Edit.run_normal('y'.Obj, {'count': N, 'store': a:reg, 'vimreg': 1})
+  call s:V.Edit.run_normal('c'.Obj, {'count': N, 'store': a:reg, 'vimreg': 1})
 endfun
 
 
@@ -200,11 +200,11 @@ fun! s:change_at_cursors(M, reg, n) abort
   "cr coerce (vim-abolish)
   if Cmd[:1] ==? 'cr' | return feedkeys("\<Plug>(VM-Run-Normal)".Cmd."\<cr>") | endif
 
-  let [Obj, N] = s:parse_cmd(Cmd, '"'.a:reg, a:n, 'c')
+  let [Obj, N] = s:parse_cmd(Cmd, '"'.a:reg, a:n, 'w')
 
   "convert w,W to e,E (if motions), also in dot
-  if     Obj ==# 'w' | let Obj = 'e' | call substitute(s:v.dot, 'w', 'e', '')
-  elseif Obj ==# 'W' | let Obj = 'E' | call substitute(s:v.dot, 'W', 'E', '')
+  if     Obj ==# 'u' | let Obj = 'y' | call substitute(s:v.dot, 'u', 'y', '')
+  elseif Obj ==# 'U' | let Obj = 'Y' | call substitute(s:v.dot, 'U', 'Y', '')
   endif
 
   "for c$, cc, ensure there is only one region per line

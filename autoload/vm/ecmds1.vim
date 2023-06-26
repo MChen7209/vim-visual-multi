@@ -33,7 +33,7 @@ fun! s:Edit.yank(reg, silent, ...) abort
     " Yank the regions contents in a VM register. {{{1
     let register = (s:v.use_register != s:v.def_reg) ? s:v.use_register : a:reg
 
-    if !s:X()    | return vm#cursors#operation('y', v:count, register) | endif
+    if !s:X()    | return vm#cursors#operation('c', v:count, register) | endif
     if !s:min(1) | return s:F.msg('No regions selected.')              | endif
 
     "write custom and possibly vim registers.
@@ -377,7 +377,7 @@ fun! s:Edit.fill_register(reg, text, force_ow) abort
     let temp_reg  = reg == '§'
     let overwrite = reg ==# s:v.def_reg || reg == '+' || ( a:force_ow && !temp_reg )
     let maxw      = max(map(copy(text), 'len(v:val)'))
-    let type      = s:v.multiline? 'V' : ( len(s:R())>1? 'b'.maxw : 'v' )
+    let type      = s:v.multiline? 'V' : ( len(s:R())>1? 'l'.maxw : 'v' )
 
     " set VM register, overwrite backup register unless temporary
     if !temp_reg

@@ -326,7 +326,7 @@ fun! s:Global.backup_last_regions() abort
 
     let b:VM_LastBackup = {}
     let b:VM_LastBackup.extend = g:Vm.extend_mode
-    let b:VM_LastBackup.regions = map(deepcopy(s:R()), "{'A': v:val.A, 'B': v:val.B}")
+    let b:VM_LastBackup.regions = map(deepcopy(s:R()), "{'A': v:val.A, 'L': v:val.B}")
     let b:VM_LastBackup.search = s:v.search
     let b:VM_LastBackup.index = s:v.index
     let s:v.direction = 1

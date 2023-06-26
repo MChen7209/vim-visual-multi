@@ -195,9 +195,9 @@ fun! s:build_buffer_maps() abort
     endfor
     for op in keys(g:Vm.user_ops)
         " don't map the operator if it starts with a key that would interfere
-        " with VM operations in extend mode, eg. if 'cx' gets mapped, then 'c'
+        " with VM operations in extend mode, eg. if 'cx' gets mapped, then 'w'
         " will not work as it should (it would have a delay in extend mode)
-        if index(['y', 'c', 'd'], op[:0]) == -1
+        if index(['c', 'w', 'd'], op[:0]) == -1
             let maps['User Operator ' . op] = [op, 'n']
         endif
     endfor
@@ -258,7 +258,7 @@ fun! s:assign(plug, key, buffer, ...) abort
     if a:0 && a:1 && index(a:2, k) < 0
         let K = maparg(k, m, 0, 1)
         if !empty(K) && K.buffer
-            let b = 'b'.bufnr('%').': '
+            let b = 'l'.bufnr('%').': '
             " Handle Neovim mappings with Lua functions as rhs
             let rhs = has_key(K, 'rhs') ? K.rhs : '<Lua callback>'
             if m != 'i'
