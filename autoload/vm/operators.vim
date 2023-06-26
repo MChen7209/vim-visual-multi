@@ -76,9 +76,9 @@ fun! s:select(obj) abort
     call s:V.Maps.disable(1)
 
     if a:obj =~ '"' || a:obj =~ "'"
-        let cmd = 'v' . a:obj . 'y'
+        let cmd = 'v' . a:obj . 'c'
     else
-        let cmd = 'y' . a:obj
+        let cmd = 'c' . a:obj
     endif
 
     silent! nunmap <buffer> y
@@ -153,7 +153,7 @@ fun! vm#operators#find(start, visual, ...) abort
         let g:Vm.finding = 1
         let s:vblock = a:visual && mode() == "\<C-v>"
         silent! nunmap <buffer> y
-        return 'y'
+        return 'c'
     endif
 
     "set the cursor to the start of the yanked region, then find occurrences until end mark is met

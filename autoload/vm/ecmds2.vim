@@ -48,7 +48,7 @@ fun! s:Edit.change(X, count, reg, smart_case) abort
         let s:v.changed_text = self.delete(1, reg, 1, 0)
         call s:V.Insert.key('i')
     else
-        call vm#cursors#operation('c', a:count, a:reg)
+        call vm#cursors#operation('w', a:count, a:reg)
     endif
 endfun
 

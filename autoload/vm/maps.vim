@@ -195,9 +195,9 @@ fun! s:build_buffer_maps() abort
     endfor
     for op in keys(g:Vm.user_ops)
         " don't map the operator if it starts with a key that would interfere
-        " with VM operations in extend mode, eg. if 'cx' gets mapped, then 'c'
+        " with VM operations in extend mode, eg. if 'cx' gets mapped, then 'w'
         " will not work as it should (it would have a delay in extend mode)
-        if index(['y', 'c', 'd'], op[:0]) == -1
+        if index(['c', 'w', 'd'], op[:0]) == -1
             let maps['User Operator ' . op] = [op, 'n']
         endif
     endfor

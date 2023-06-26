@@ -1,7 +1,7 @@
 # VMSearch test
 
 keys(r':VMSearch magna\<CR>')
-keys(r'c')
+keys(r'w')
 keys(r'MAGNA')
 keys(r'\<Esc>')
 keys(r'\<Esc>')
@@ -9,7 +9,7 @@ keys(r'\<Esc>')
 # BUGGER... this took me a hour, and it still fails in vim
 keys(r':%VMSearch \\')
 keys(r'<LT>dolor\>\<CR>')
-keys(r'c')
+keys(r'w')
 keys(r'DOLOR')
 keys(r'\<Esc>')
 keys(r'\<Esc>')

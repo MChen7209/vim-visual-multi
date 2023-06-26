@@ -33,7 +33,7 @@ fun! s:Edit.yank(reg, silent, ...) abort
     " Yank the regions contents in a VM register. {{{1
     let register = (s:v.use_register != s:v.def_reg) ? s:v.use_register : a:reg
 
-    if !s:X()    | return vm#cursors#operation('y', v:count, register) | endif
+    if !s:X()    | return vm#cursors#operation('c', v:count, register) | endif
     if !s:min(1) | return s:F.msg('No regions selected.')              | endif
 
     "write custom and possibly vim registers.
