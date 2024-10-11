@@ -43,10 +43,10 @@ fun! vm#cursors#operation(op, n, register, ...) abort
     elseif s:double(c)              | echon c | let M .= c
       let c = nr2char(getchar())    | echon c | let M .= c | break
 
-    elseif oper ==# 'w' && c==?'r'  | echon c | let M .= c
+    elseif oper ==# 'u' && c==?'r'  | echon c | let M .= c
       let c = nr2char(getchar())    | echon c | let M .= c | break
 
-    elseif oper ==# 'w' && c==?'s'  | echon c | let M .= c
+    elseif oper ==# 'u' && c==?'s'  | echon c | let M .= c
       let c = nr2char(getchar())    | echon c | let M .= c
       let c = nr2char(getchar())    | echon c | let M .= c | break
 
@@ -56,7 +56,7 @@ fun! vm#cursors#operation(op, n, register, ...) abort
         let c = nr2char(getchar())  | echon c | let M .= c
       endif
       let c = nr2char(getchar())    | echon c
-      if c == '<' || c == 't'
+      if c == '<' || c == 'p' || c == 't'
         redraw
         let tag = s:V.Edit.surround_tags()
         if tag == ''
@@ -96,7 +96,7 @@ endfun
 fun! s:process(op, M, reg, n) abort
   " Process the whole command
   let s:v.dot = a:M
-  let s:v.deleting = a:op == 'd' || a:op == 'w'
+  let s:v.deleting = a:op == 'd' || a:op == 'u'
 
   if a:op ==# 'd'     | call s:delete_at_cursors(a:M, a:reg, a:n)
   elseif a:op ==# 'w' | call s:change_at_cursors(a:M, a:reg, a:n)
@@ -195,16 +195,16 @@ fun! s:change_at_cursors(M, reg, n) abort
   let Cmd = a:M
 
   "cs surround
-  if Cmd[:1] ==? 'cs' | return s:V.Edit.run_normal(Cmd) | endif
+  if Cmd[:1] ==? 'ws' | return s:V.Edit.run_normal(Cmd) | endif
 
   "cr coerce (vim-abolish)
-  if Cmd[:1] ==? 'cr' | return feedkeys("\<Plug>(VM-Run-Normal)".Cmd."\<cr>") | endif
+  if Cmd[:1] ==? 'wr' | return feedkeys("\<Plug>(VM-Run-Normal)".Cmd."\<cr>") | endif
 
-  let [Obj, N] = s:parse_cmd(Cmd, '"'.a:reg, a:n, 'w')
+  let [Obj, N] = s:parse_cmd(Cmd, '"'.a:reg, a:n, 'u')
 
   "convert w,W to e,E (if motions), also in dot
-  if     Obj ==# 'w' | let Obj = 'e' | call substitute(s:v.dot, 'w', 'e', '')
-  elseif Obj ==# 'W' | let Obj = 'E' | call substitute(s:v.dot, 'W', 'E', '')
+  if     Obj ==# 'u' | let Obj = 'y' | call substitute(s:v.dot, 'u', 'y', '')
+  elseif Obj ==# 'U' | let Obj = 'Y' | call substitute(s:v.dot, 'U', 'Y', '')
   endif
 
   "for c$, cc, ensure there is only one region per line
@@ -276,7 +276,7 @@ endfun
 let s:R = { -> s:V.Regions }
 
 " motions that move the cursor forward
-let s:forward = { c -> index(split('weWE%', '\zs'), c) >= 0 }
+let s:forward = { c -> index(split('uyUY%', '\zs'), c) >= 0 }
 
 " text objects starting with 'i' or 'a'
 let s:ia = { c -> index(['i', 'a'], c[:0]) >= 0 }
@@ -285,9 +285,9 @@ let s:ia = { c -> index(['i', 'a'], c[:0]) >= 0 }
 let s:inside = { c -> c[:0] == 'i' && index(split('bBt[](){}"''`<>', '\zs') + vm#comp#iobj(), c[1:1]) >= 0 }
 
 " single character motions
-let s:single = { c -> index(split('hljkwebWEB$^0{}()%nN_', '\zs'), c) >= 0 }
+let s:single = { c -> index(split('mneiluyLUY$^0{}()%kK_', '\zs'), c) >= 0 }
 
 " motions that expect a second character
-let s:double = { c -> index(split('iafFtTg', '\zs'), c) >= 0 }
+let s:double = { c -> index(split('rtfFtTpPg', '\zs'), c) >= 0 }
 
 " vim: et sw=2 ts=2 sts=2 fdm=indent fdn=1
